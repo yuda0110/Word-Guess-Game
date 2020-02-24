@@ -4,9 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>80's Theme Word Guess Game</title>
+    <title>Word Guess Game - What's Famous in Japan?</title>
+    <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
 </head>
 <body>
+<div class="container">
+    <h1>Word Guess Game</h1>
+    <h2>What's famous in Japan??</h2>
+
+    <section id="wins">
+        <h3>Wins</h3>
+        <div class="wins--num">
+        </div>
+    </section>
+
+    <section id="current-word">
+        <h3>Current Word</h3>
+        <div class="current-word__display">
+        </div>
+        <div class="hint">
+            <h4 class="hint__header">Hint</h4>
+            <p class="hint__content"></p>
+        </div>
+    </section>
+
+    <section id="guesses-remain">
+        <h3>Number of Guesses Remaining</h3>
+        <div class="guesses-remain--num">
+        </div>
+    </section>
+
+    <section id="already-guessed">
+        <h3>Letters Already Guessed</h3>
+        <div class="already-guessed--letters">
+        </div>
+    </section>
+</div>
 
 <script type="text/javascript" src="./assets/javascript/game.js"></script>
 </body>
