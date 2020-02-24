@@ -59,35 +59,38 @@ document.addEventListener('DOMContentLoaded', () => {
 const hiddenLetter = '_'
 const currentWord = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase();
 let displayedWord = '';
-let updatedWord = '';
 
 document.onkeyup = function(e) {
-  if (!wordGuessGame.isStarted) {
+  const letter = e.key.toLowerCase();
+  let updatedWord = '';
+
+  if (wordGuessGame.isStarted) {
+    for (let i = 0; i < currentWord.length; i++) {
+      if (currentWord[i] === letter) {
+        updatedWord += currentWord[i];
+        console.log('1: ' + updatedWord);
+      } else if (displayedWord[i] !== hiddenLetter) {
+        updatedWord += currentWord[i];
+        console.log('2: ' + updatedWord);
+      }
+      else {
+        updatedWord += hiddenLetter;
+        console.log('3: ' + updatedWord);
+      }
+    }
+    displayedWord = updatedWord
+    htmlEl.wordDisplay.innerHTML = updatedWord;
+  } else {
     console.log('game is not started!')
-    wordGuessGame.isStarted = true;
     console.log(wordGuessGame.isStarted);
     displayedWord = hiddenLetter.repeat(currentWord.length);
     htmlEl.wordDisplay.textContent = displayedWord;
+    console.log('!wordGuessGame.isStarted block')
 
     htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
+    wordGuessGame.isStarted = true;
+    console.log(wordGuessGame.isStarted);
   }
-
-  const letter = e.key.toLowerCase();
-
-  for (let i = 0; i < currentWord.length; i++) {
-    if (currentWord[i] === letter) {
-      updatedWord += letter;
-      console.log('1: ' + updatedWord);
-    } else if (displayedWord[i] !== hiddenLetter) {
-      updatedWord += currentWord[i];
-      console.log('2: ' + updatedWord);
-    } else {
-      updatedWord += hiddenLetter;
-      console.log('3: ' + updatedWord);
-    }
-  }
-  htmlEl.wordDisplay.innerHTML = updatedWord;
-
 
 };
 
