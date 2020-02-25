@@ -3,7 +3,8 @@ const htmlEl = {
   wordDisplay: document.querySelector('.current-word__display'),
   hint: document.querySelector('.hint__content'),
   guessesRemainNum: document.querySelector('.guesses-remain--num'),
-  guessedLetters: document.querySelector('.guessed--letters')
+  guessedLetters: document.querySelector('.guessed--letters'),
+  warning: document.querySelector('.warning')
 };
 
 const wordGuessGame = {
@@ -64,23 +65,41 @@ document.onkeyup = function(e) {
   const letter = e.key.toLowerCase();
   let updatedWord = '';
 
+  // If the game is already started and the key is an alphabet
   if (wordGuessGame.isStarted) {
-    for (let i = 0; i < currentWord.length; i++) {
-      if (currentWord[i] === letter) {
-        updatedWord += currentWord[i];
-        console.log('1: ' + updatedWord);
-      } else if (displayedWord[i] !== hiddenLetter) {
-        updatedWord += currentWord[i];
-        console.log('2: ' + updatedWord);
+    if (letter.match(/[a-z]/g)) {
+      htmlEl.warning.textContent = '';
+
+      // Logic to what to show on Current Word
+      for (let i = 0; i < currentWord.length; i++) {
+        if (currentWord[i] === letter) {
+          updatedWord += currentWord[i];
+          console.log('1: ' + updatedWord);
+        } else if (displayedWord[i] !== hiddenLetter) {
+          updatedWord += currentWord[i];
+          console.log('2: ' + updatedWord);
+        } else {
+          updatedWord += hiddenLetter;
+          console.log('3: ' + updatedWord);
+        }
       }
-      else {
-        updatedWord += hiddenLetter;
-        console.log('3: ' + updatedWord);
+      displayedWord = updatedWord
+      htmlEl.wordDisplay.innerHTML = updatedWord;
+
+      // Only if the letter is not included in the lettersGuessed array, add it to the array.
+      if (wordGuessGame.lettersGuessed.indexOf(letter) < 0) {
+        wordGuessGame.lettersGuessed.push(letter);
+        let html = '';
+        wordGuessGame.lettersGuessed.forEach(function (letter) {
+          html += `<span class="guessed--letter">${letter}</span>`
+        })
+        htmlEl.guessedLetters.innerHTML = html;
       }
+    } else {
+      htmlEl.warning.textContent = 'Please press only alphabet keys.';
     }
-    displayedWord = updatedWord
-    htmlEl.wordDisplay.innerHTML = updatedWord;
-  } else {
+
+  } else { // When the game hasn't started yet. (Before the player press any key.)
     console.log('game is not started!')
     console.log(wordGuessGame.isStarted);
     displayedWord = hiddenLetter.repeat(currentWord.length);
