@@ -4,8 +4,15 @@ const htmlEl = {
   hint: document.querySelector('.hint__content'),
   guessesRemainNum: document.querySelector('.guesses-remain--num'),
   guessedLetters: document.querySelector('.guessed--letters'),
-  warning: document.querySelector('.warning')
+  direction: document.querySelector('.direction')
 };
+
+const directions = {
+  start: 'Press any key to get started!',
+  wrongKey: 'Please press only alphabet keys.',
+  play: 'Please press an alphabet key which you think is included in the word.',
+  fail: 'You have failed :('
+}
 
 const wordGuessGame = {
   isStarted: false,
@@ -51,6 +58,7 @@ const wordGuessGame = {
 function setUpPage() {
   wordGuessGame.writeWinsNum();
   wordGuessGame.writeGuessRemainNum();
+  htmlEl.direction.textContent = directions.start;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,10 +73,11 @@ document.onkeyup = function(e) {
   const letter = e.key.toLowerCase();
   let updatedWord = '';
 
-  // If the game is already started and the key is an alphabet
+  // If the game is already started &&
   if (wordGuessGame.isStarted) {
+    // If the key is an alphabet
     if (letter.match(/[a-z]/g)) {
-      htmlEl.warning.textContent = '';
+      htmlEl.direction.textContent = directions.play;
 
       // Logic to what to show on Current Word
       for (let i = 0; i < currentWord.length; i++) {
@@ -95,8 +104,18 @@ document.onkeyup = function(e) {
         })
         htmlEl.guessedLetters.innerHTML = html;
       }
-    } else {
-      htmlEl.warning.textContent = 'Please press only alphabet keys.';
+
+      // Reduce "Number of Guesses Remaining" until it hits 0.
+      if (wordGuessGame.guessesRemainNum > 1) {
+        wordGuessGame.guessesRemainNum -= 1;
+        htmlEl.guessesRemainNum.textContent = wordGuessGame.guessesRemainNum;
+      } else {
+        htmlEl.guessesRemainNum.textContent = '0';
+        htmlEl.direction.textContent = directions.fail;
+      }
+
+    } else { // If the key is NOT an alphabet
+      htmlEl.direction.textContent = directions.wrongKey;
     }
 
   } else { // When the game hasn't started yet. (Before the player press any key.)
@@ -107,6 +126,7 @@ document.onkeyup = function(e) {
     console.log('!wordGuessGame.isStarted block')
 
     htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
+    htmlEl.direction.textContent = directions.play;
     wordGuessGame.isStarted = true;
     console.log(wordGuessGame.isStarted);
   }
