@@ -88,18 +88,18 @@ function startNewWord() {
 }
 
 document.onkeyup = function(e) {
-  const letter = e.key.toLowerCase();
+  const userGuess = e.key.toLowerCase();
   let updatedWord = '';
 
   // If the game is already started &&
   if (wordGuessGame.isStarted) {
     // If the key is an alphabet
-    if (letter.match(/[a-z]/g)) {
+    if (userGuess.match(/[a-z]/g)) {
       htmlEl.direction.textContent = directions.play;
 
       // Logic to what to show on Current Word
       for (let i = 0; i < currentWord.length; i++) {
-        if (currentWord[i] === letter) {
+        if (currentWord[i] === userGuess) {
           updatedWord += currentWord[i];
           console.log('1: ' + updatedWord);
         } else if (displayedWord[i] !== hiddenLetter) {
@@ -116,9 +116,9 @@ document.onkeyup = function(e) {
 
       // Reduce "Number of Guesses Remaining" until it hits 0.
       if (wordGuessGame.guessesRemainNum > 1) {
-        console.log('letter: ' + letter);
-        console.log('index: ' + wordGuessGame.lettersGuessed.indexOf(letter));
-        if (wordGuessGame.lettersGuessed.indexOf(letter) < 0) {
+        console.log('userGuess: ' + userGuess);
+        console.log('index: ' + wordGuessGame.lettersGuessed.indexOf(userGuess));
+        if (wordGuessGame.lettersGuessed.indexOf(userGuess) < 0) {
           wordGuessGame.guessesRemainNum -= 1;
           htmlEl.guessesRemainNum.textContent = wordGuessGame.guessesRemainNum;
         } else {
@@ -134,9 +134,9 @@ document.onkeyup = function(e) {
         }
       }
 
-      // Only if the letter is not included in the lettersGuessed array, add it to the array.
-      if (wordGuessGame.lettersGuessed.indexOf(letter) < 0) {
-        wordGuessGame.lettersGuessed.push(letter);
+      // Only if the userGuess is not included in the lettersGuessed array, add it to the array.
+      if (wordGuessGame.lettersGuessed.indexOf(userGuess) < 0) {
+        wordGuessGame.lettersGuessed.push(userGuess);
         let html = '';
         wordGuessGame.lettersGuessed.forEach(function (letter) {
           html += `<span class="guessed--letter">${letter}</span>`;
@@ -144,7 +144,7 @@ document.onkeyup = function(e) {
         htmlEl.guessedLetters.innerHTML = html;
       }
 
-    } else { // If the key is NOT an alphabet
+    } else { // If the userGuess is NOT an alphabet
       htmlEl.direction.textContent = directions.wrongKey;
     }
 

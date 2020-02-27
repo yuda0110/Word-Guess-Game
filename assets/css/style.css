@@ -1,3 +1,7 @@
+.current-word__display {
+    letter-spacing: .5rem;
+}
+
 .guessed--letter {
     text-transform: uppercase;
     display: inline-block;
