@@ -58,18 +58,20 @@ const wordGuessGame = {
   },
   resetLettersGuessed: function() {
     this.lettersGuessed = [];
-  },
-  writeWinsNum: function () {
-    htmlEl.winsNum.textContent= this.wins;
-  },
-  writeGuessRemainNum: function () {
-    htmlEl.guessesRemainNum.textContent= this.guessesRemainNum;
-  },
+  }
 };
 
+function writeWinsNum() {
+  htmlEl.winsNum.textContent = wordGuessGame.wins;
+}
+
+function writeGuessRemainNum() {
+  htmlEl.guessesRemainNum.textContent= wordGuessGame.guessesRemainNum;
+}
+
 function setUpPage() {
-  wordGuessGame.writeWinsNum();
-  wordGuessGame.writeGuessRemainNum();
+  writeWinsNum();
+  writeGuessRemainNum();
   htmlEl.direction.textContent = directions.start;
 }
 
@@ -77,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setUpPage();
 });
 
-const hiddenLetter = '_'
+const hiddenLetter = '_';
 let currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
 let displayedWord = [];
 
@@ -93,7 +95,7 @@ function startNewWord() {
   htmlEl.guessedLetters.textContent = wordGuessGame.lettersGuessed;
 
   wordGuessGame.resetGuessesRemainNum();
-  wordGuessGame.writeGuessRemainNum();
+  writeGuessRemainNum();
 
   // Reset displayedWord.
   displayedWord = [];
