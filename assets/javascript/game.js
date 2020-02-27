@@ -41,6 +41,10 @@ const wordGuessGame = {
     {
       word: 'ukiyoe',
       hint1: 'traditional painting'
+    },
+    {
+      word: 'kimono',
+      hint1: 'traditional dress'
     }
   ],
   addGameNum: function () {
@@ -52,12 +56,12 @@ const wordGuessGame = {
   addWin: function () {
     this.wins += 1;
   },
+  resetLettersGuessed: function() {
+    this.lettersGuessed = [];
+  },
   writeWinsNum: function () {
     htmlEl.winsNum.textContent= this.wins;
   },
-  // writeHint: function () {
-  //   htmlEl.hint.textContent= this.wins;
-  // },
   writeGuessRemainNum: function () {
     htmlEl.guessesRemainNum.textContent= this.guessesRemainNum;
   },
@@ -74,14 +78,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const hiddenLetter = '_'
-const currentWord = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase();
-let displayedWord = '';
+let currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
+let displayedWord = [];
+
+function getCurrentWordArray() {
+  console.log('getCurrentWordArray function is called! index: ' + wordGuessGame.gameNum);
+  currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
+}
 
 function startNewWord() {
+  console.log('startNewWord!!!');
+
+  wordGuessGame.resetLettersGuessed();
+  htmlEl.guessedLetters.textContent = wordGuessGame.lettersGuessed;
+
   wordGuessGame.resetGuessesRemainNum();
   wordGuessGame.writeGuessRemainNum();
-  displayedWord = hiddenLetter.repeat(currentWord.length);
-  htmlEl.wordDisplay.textContent = displayedWord;
+
+  // Reset displayedWord.
+  displayedWord = [];
+  // Update currentWordArray.
+  getCurrentWordArray();
+  // create dynamic display word array based on length of current word
+  currentWordArray.forEach((item, i) =>	displayedWord[i] = hiddenLetter);
+  // join array for display
+  console.log(displayedWord.join(""));
+  htmlEl.wordDisplay.textContent = displayedWord.join('');
 
   htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
   htmlEl.direction.textContent = directions.play;
@@ -89,7 +111,6 @@ function startNewWord() {
 
 document.onkeyup = function(e) {
   const userGuess = e.key.toLowerCase();
-  let updatedWord = '';
 
   // If the game is already started &&
   if (wordGuessGame.isStarted) {
@@ -97,22 +118,13 @@ document.onkeyup = function(e) {
     if (userGuess.match(/[a-z]/g)) {
       htmlEl.direction.textContent = directions.play;
 
-      // Logic to what to show on Current Word
-      for (let i = 0; i < currentWord.length; i++) {
-        if (currentWord[i] === userGuess) {
-          updatedWord += currentWord[i];
-          console.log('1: ' + updatedWord);
-        } else if (displayedWord[i] !== hiddenLetter) {
-          updatedWord += currentWord[i];
-          console.log('2: ' + updatedWord);
-        } else {
-          updatedWord += hiddenLetter;
-          console.log('3: ' + updatedWord);
-        }
-      }
-      displayedWord = updatedWord
-      htmlEl.wordDisplay.innerHTML = updatedWord;
-
+      // Logic to what to show on Current Word ====================
+      // Iterate over currentWordArray, if match update display word array
+      currentWordArray.forEach((letter, i) => { if (letter === userGuess) displayedWord[i] = letter; });
+      // Join updated array for display
+      console.log(displayedWord.join(''));
+      htmlEl.wordDisplay.textContent = displayedWord.join('')
+      // ===========================================================
 
       // Reduce "Number of Guesses Remaining" until it hits 0.
       if (wordGuessGame.guessesRemainNum > 1) {
@@ -150,10 +162,8 @@ document.onkeyup = function(e) {
 
   } else { // When the game hasn't started yet. (Before the player press any key.)
     console.log('game is not started!')
-    console.log(wordGuessGame.isStarted);
     startNewWord();
     wordGuessGame.isStarted = true;
-    console.log(wordGuessGame.isStarted);
   }
 
 };
