@@ -118,7 +118,9 @@ document.onkeydown = function(e) {
   // If the game is already started &&
   if (wordGuessGame.isStarted) {
     // If the key is an alphabet (enter, shift, and etc keys' length is longer than 1)
-    if (userGuess.length === 1 && (userGuess.charCodeAt(0) >= 65 && userGuess.charCodeAt(0) <= 90) || (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122)) {
+    if (userGuess.length === 1 &&
+      (userGuess.charCodeAt(0) >= 65 && userGuess.charCodeAt(0) <= 90)
+      || (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122)) {
       const userGuessLowercase = userGuess.toLowerCase();
       htmlEl.direction.textContent = directions.play;
 
@@ -135,6 +137,7 @@ document.onkeydown = function(e) {
         wordGuessGame.addWin();
         htmlEl.winsNum.textContent = wordGuessGame.wins;
         htmlEl.direction.textContent = directions.win;
+        wordGuessGame.addGameNum();
         window.setTimeout(startNewWord, 3000);
       }  // *************
 
