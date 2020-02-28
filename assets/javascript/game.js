@@ -111,18 +111,19 @@ function startNewWord() {
   htmlEl.direction.textContent = directions.play;
 }
 
-document.onkeyup = function(e) {
-  const userGuess = e.key.toLowerCase();
+document.onkeydown = function(e) {
+  const userGuess = e.key;
 
   // If the game is already started &&
   if (wordGuessGame.isStarted) {
     // If the key is an alphabet
-    if (userGuess.match(/[a-z]/g)) {
+    if (userGuess.length === 1 && (userGuess.charCodeAt(0) >= 65 && userGuess.charCodeAt(0) <= 90) || (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122)) {
+      const userGuessLowercase = userGuess.toLowerCase();
       htmlEl.direction.textContent = directions.play;
 
       // Logic to what to show on Current Word ====================
       // Iterate over currentWordArray, if match update display word array
-      currentWordArray.forEach((letter, i) => { if (letter === userGuess) displayedWord[i] = letter; });
+      currentWordArray.forEach((letter, i) => { if (letter === userGuessLowercase) displayedWord[i] = letter; });
       // Join updated array for display
       console.log(displayedWord.join(''));
       htmlEl.wordDisplay.textContent = displayedWord.join('')
@@ -138,7 +139,7 @@ document.onkeyup = function(e) {
         } else {
           htmlEl.guessesRemainNum.textContent = wordGuessGame.guessesRemainNum;
         }
-      } else {  // The player failed to guess the word. ("Number of Guesses Remaining" hits 0)
+      } else {  // ============= The player failed to guess the word. ("Number of Guesses Remaining" hits 0)
         htmlEl.guessesRemainNum.textContent = '0';
         htmlEl.direction.textContent = directions.fail;
         if (wordGuessGame.gameNum < wordGuessGame.words.length) {
