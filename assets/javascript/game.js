@@ -11,7 +11,8 @@ const directions = {
   start: 'Press any key to get started!',
   wrongKey: 'Please press only alphabet keys.',
   play: 'Please press an alphabet key which you think is included in the word.',
-  fail: 'You have failed :('
+  fail: 'You have failed :(',
+  win: 'You have guessed the word correctly!!'
 }
 
 const wordGuessGame = {
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const hiddenLetter = '_';
 let currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
-let displayedWord = [];
+let displayedWordArray = [];
 
 function getCurrentWordArray() {
   console.log('getCurrentWordArray function is called! index: ' + wordGuessGame.gameNum);
@@ -97,15 +98,15 @@ function startNewWord() {
   wordGuessGame.resetGuessesRemainNum();
   writeGuessRemainNum();
 
-  // Reset displayedWord.
-  displayedWord = [];
+  // Reset displayedWordArray.
+  displayedWordArray = [];
   // Update currentWordArray.
   getCurrentWordArray();
   // create dynamic display word array based on length of current word
-  currentWordArray.forEach((item, i) =>	displayedWord[i] = hiddenLetter);
+  currentWordArray.forEach((item, i) =>	displayedWordArray[i] = hiddenLetter);
   // join array for display
-  console.log(displayedWord.join(""));
-  htmlEl.wordDisplay.textContent = displayedWord.join('');
+  console.log(displayedWordArray.join(""));
+  htmlEl.wordDisplay.textContent = displayedWordArray.join('');
 
   htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
   htmlEl.direction.textContent = directions.play;
@@ -116,18 +117,26 @@ document.onkeydown = function(e) {
 
   // If the game is already started &&
   if (wordGuessGame.isStarted) {
-    // If the key is an alphabet
+    // If the key is an alphabet (enter, shift, and etc keys' length is longer than 1)
     if (userGuess.length === 1 && (userGuess.charCodeAt(0) >= 65 && userGuess.charCodeAt(0) <= 90) || (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122)) {
       const userGuessLowercase = userGuess.toLowerCase();
       htmlEl.direction.textContent = directions.play;
 
       // Logic to what to show on Current Word ====================
       // Iterate over currentWordArray, if match update display word array
-      currentWordArray.forEach((letter, i) => { if (letter === userGuessLowercase) displayedWord[i] = letter; });
+      currentWordArray.forEach((letter, i) => { if (letter === userGuessLowercase) displayedWordArray[i] = letter; });
       // Join updated array for display
-      console.log(displayedWord.join(''));
-      htmlEl.wordDisplay.textContent = displayedWord.join('')
-      // ===========================================================
+      const displayedWord = displayedWordArray.join('');
+      console.log(displayedWord);
+      htmlEl.wordDisplay.textContent = displayedWord;
+
+      // *************** The player succeed to guess the word correctly.
+      if (displayedWord === wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase()) {
+        wordGuessGame.addWin();
+        htmlEl.winsNum.textContent = wordGuessGame.wins;
+        htmlEl.direction.textContent = directions.win;
+        window.setTimeout(startNewWord, 3000);
+      }  // *************
 
       // Reduce "Number of Guesses Remaining" until it hits 0.
       if (wordGuessGame.guessesRemainNum > 1) {
@@ -139,14 +148,14 @@ document.onkeydown = function(e) {
         } else {
           htmlEl.guessesRemainNum.textContent = wordGuessGame.guessesRemainNum;
         }
-      } else {  // ============= The player failed to guess the word. ("Number of Guesses Remaining" hits 0)
+      } else {  // *************** The player failed to guess the word. ("Number of Guesses Remaining" hits 0)
         htmlEl.guessesRemainNum.textContent = '0';
         htmlEl.direction.textContent = directions.fail;
         if (wordGuessGame.gameNum < wordGuessGame.words.length) {
           wordGuessGame.addGameNum();
           console.log('wordGuessGame.gameNum: ' + wordGuessGame.gameNum);
-          window.setTimeout(startNewWord, 5000);
-        }
+          window.setTimeout(startNewWord, 3000);
+        }  // ********************
       }
 
       // Only if the userGuess is not included in the lettersGuessed array, add it to the array.
