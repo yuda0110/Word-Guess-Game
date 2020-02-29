@@ -15,7 +15,8 @@ const messages = {
   wrongKey: 'Please press only alphabet keys.',
   play: 'Please press an alphabet key which you think is included in the word.',
   fail: 'You have failed :(',
-  win: 'You have guessed the word correctly!!'
+  win: 'You have guessed the word correctly!!',
+  completed: 'You have completed the game!'
 }
 
 const wordGuessGame = {
@@ -96,27 +97,31 @@ function getCurrentWordArray() {
   currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
 }
 
+// If there is still any word to guess, it starts a new game with a new word,
+// otherwise, it only shows completed message.
 function startNewWord() {
-  console.log('startNewWord!!!');
+  if (wordGuessGame.gameNum < wordGuessGame.words.length) {
+    wait = false;
+    wordGuessGame.resetLettersGuessed();
+    htmlEl.guessedLetters.textContent = wordGuessGame.lettersGuessed;
 
-  wait = false;
-  wordGuessGame.resetLettersGuessed();
-  htmlEl.guessedLetters.textContent = wordGuessGame.lettersGuessed;
+    wordGuessGame.resetGuessesRemainNum();
+    writeGuessRemainNum(wordGuessGame.guessesDefaultNum);
 
-  wordGuessGame.resetGuessesRemainNum();
-  writeGuessRemainNum(wordGuessGame.guessesDefaultNum);
+    // Reset displayedWordArray.
+    displayedWordArray = [];
+    // Update currentWordArray.
+    getCurrentWordArray();
+    // create dynamic display word array based on length of current word
+    currentWordArray.forEach((item, i) =>	displayedWordArray[i] = hiddenLetter);
+    // join array for display
+    htmlEl.wordDisplay.textContent = displayedWordArray.join('');
 
-  // Reset displayedWordArray.
-  displayedWordArray = [];
-  // Update currentWordArray.
-  getCurrentWordArray();
-  // create dynamic display word array based on length of current word
-  currentWordArray.forEach((item, i) =>	displayedWordArray[i] = hiddenLetter);
-  // join array for display
-  htmlEl.wordDisplay.textContent = displayedWordArray.join('');
-
-  htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
-  writeMessage(messages.play);
+    htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
+    writeMessage(messages.play);
+  } else {
+    writeMessage(messages.completed);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -197,8 +202,7 @@ document.onkeydown = function(e) {
       writeMessage(messages.wrongKey);
     }
 
-  } else { // When the game hasn't started yet. (Before the player press any key.)
-    console.log('game is not started!')
+  } else { // When the game hasn't started yet. (Before the player presses any key.)
     startNewWord();
     wordGuessGame.isStarted = true;
   }
