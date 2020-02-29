@@ -7,7 +7,7 @@ const htmlEl = {
   hint: document.querySelector('.hint__content'),
   guessesRemainNum: document.querySelector('.guesses-remain--num'),
   guessedLetters: document.querySelector('.guessed--letters'),
-  direction: document.querySelector('.direction')
+  message: document.querySelector('.message')
 };
 
 const messages = {
@@ -80,8 +80,8 @@ function setUpPage() {
   writeMessage(messages.start);
 }
 
-function writeMessage(direction) {
-  htmlEl.direction.textContent = direction;
+function writeMessage(message) {
+  htmlEl.message.textContent = message;
 }
 
 function writeWinsNum() {
