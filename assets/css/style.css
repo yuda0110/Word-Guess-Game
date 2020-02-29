@@ -31,8 +31,12 @@ html {
 
 body {
     font-family: var(--font-default);
+    min-height: 100vh;
+    padding-top: 5rem;
     line-height: 1.6;
     background-color: var(--color-gold);
+    background: var(--color-gold) url("../images/bg1.jpg") repeat-x;
+    background-position: bottom;
     color: var(--color-black);
     position: relative;
     font-size: 1.6rem;
@@ -51,7 +55,6 @@ h2 {
 }
 
 h1 {
-    margin-top: 5rem;
     font-size: 5rem;
     font-weight: bold;
 }
@@ -116,7 +119,7 @@ footer {
     height: 233px;
     position: fixed;
     bottom: 0;
-    background: url("../images/bg1.jpg") repeat-x;
+    /*background: url("../images/bg1.jpg") repeat-x;*/
     color: var(--color-white);
 }
 
