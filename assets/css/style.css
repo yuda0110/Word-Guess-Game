@@ -1,3 +1,63 @@
+/* ========== VARIABLES ========== */
+:root {
+    --color-teal: #4aaaa5;
+    --color-orange: #e1821d;
+    --color-white: #fff;
+    --color-light-gray1: #dedede;
+    --color-light-gray2: #ddd;
+    --color-light-gray3: #ccc;
+    --color-dark-gray1: #777;
+    --color-dark-gray2: #666;
+
+    --font-heading: 'Georgia', Times, Times New Roman, serif;
+    --font-default: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+/* ========== COMMON ========== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 50%; /* 8px/16px = 50% -> 1rem = 8px */
+}
+
+body {
+    font-family: var(--font-default);
+    line-height: 1.6;
+    background-color: #e1c864;
+    color: var(--color-dark-gray1);
+    position: relative;
+    font-size: 1.6rem;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-heading);
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+/* ========== MAIN CONTENTS ========== */
+.container {
+    width: calc(100% - 6rem);
+    max-width: 800px;
+    margin: 3rem auto 12rem;
+    padding: 3rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-light-gray2);
+    border-radius: .5rem;
+}
+
 .current-word__display {
     letter-spacing: .5rem;
 }
@@ -9,4 +69,15 @@
 
 .guessed--letter:not(:last-of-type) {
     margin-right: 1rem;
+}
+
+
+/* ========== FOOTER ========== */
+footer {
+    width: 100%;
+    height: 233px;
+    position: fixed;
+    bottom: 0;
+    background: url("../images/bg1.jpg") repeat-x;
+    color: var(--color-white);
 }
