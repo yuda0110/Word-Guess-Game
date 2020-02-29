@@ -1,3 +1,6 @@
+const winningSound = new Audio('./assets/audio/winning-sound.mp3');
+const losingSound = new Audio('./assets/audio/losing-sound.mp3');
+
 const htmlEl = {
   winsNum: document.querySelector('.wins--num'),
   wordDisplay: document.querySelector('.current-word__display'),
@@ -7,7 +10,7 @@ const htmlEl = {
   direction: document.querySelector('.direction')
 };
 
-const directions = {
+const messages = {
   start: 'Press any key to get started!',
   wrongKey: 'Please press only alphabet keys.',
   play: 'Please press an alphabet key which you think is included in the word.',
@@ -62,23 +65,6 @@ const wordGuessGame = {
   }
 };
 
-function writeWinsNum() {
-  htmlEl.winsNum.textContent = wordGuessGame.wins;
-}
-
-function writeGuessRemainNum() {
-  htmlEl.guessesRemainNum.textContent= wordGuessGame.guessesRemainNum;
-}
-
-function setUpPage() {
-  writeWinsNum();
-  writeGuessRemainNum();
-  htmlEl.direction.textContent = directions.start;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  setUpPage();
-});
 
 const hiddenLetter = '_';
 let currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
@@ -88,8 +74,25 @@ let displayedWordArray = [];
 // 'wait' must start as false otherwise the game will never start!!
 let wait = false;
 
+function setUpPage() {
+  writeWinsNum();
+  writeGuessRemainNum();
+  writeMessage(messages.start);
+}
+
+function writeMessage(direction) {
+  htmlEl.direction.textContent = direction;
+}
+
+function writeWinsNum() {
+  htmlEl.winsNum.textContent = wordGuessGame.wins;
+}
+
+function writeGuessRemainNum() {
+  htmlEl.guessesRemainNum.textContent= wordGuessGame.guessesRemainNum;
+}
+
 function getCurrentWordArray() {
-  console.log('getCurrentWordArray function is called! index: ' + wordGuessGame.gameNum);
   currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
 }
 
@@ -114,8 +117,12 @@ function startNewWord() {
   htmlEl.wordDisplay.textContent = displayedWordArray.join('');
 
   htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
-  htmlEl.direction.textContent = directions.play;
+  writeMessage(messages.play);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  setUpPage();
+});
 
 document.onkeydown = function(e) {
   if (wait) {
@@ -131,7 +138,7 @@ document.onkeydown = function(e) {
       (userGuess.charCodeAt(0) >= 65 && userGuess.charCodeAt(0) <= 90)
       || (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122)) {
       const userGuessLowercase = userGuess.toLowerCase();
-      htmlEl.direction.textContent = directions.play;
+      writeMessage(messages.play);
 
       // Logic to what to show on Current Word ====================
       // Iterate over currentWordArray, if match update display word array
@@ -166,25 +173,30 @@ document.onkeydown = function(e) {
         wait = true;
         wordGuessGame.addWin();
         htmlEl.winsNum.textContent = wordGuessGame.wins;
-        htmlEl.direction.textContent = directions.win;
+        writeMessage(messages.win);
         wordGuessGame.addGameNum();
-        window.setTimeout(startNewWord, 3000);
+        winningSound.play();
+        winningSound.addEventListener("ended", function () {
+          startNewWord();
+        }, false);
       }  // *************
 
       // *************** LOSE!!! The player failed to guess the word. ("Number of Guesses Remaining" hits 0)
       if (wordGuessGame.guessesRemainNum <= 0) {
         wait = true;
         htmlEl.guessesRemainNum.textContent = '0';
-        htmlEl.direction.textContent = directions.fail;
+        writeMessage(messages.fail);
         if (wordGuessGame.gameNum < wordGuessGame.words.length) {
           wordGuessGame.addGameNum();
-          console.log('wordGuessGame.gameNum: ' + wordGuessGame.gameNum);
-          window.setTimeout(startNewWord, 3000);
-        }  // ********************
-      }
+          losingSound.play();
+          losingSound.addEventListener("ended", function () {
+            startNewWord();
+          }, false);
+        }
+      } // ********************
 
     } else { // If the userGuess is NOT an alphabet
-      htmlEl.direction.textContent = directions.wrongKey;
+      writeMessage(messages.wrongKey);
     }
 
   } else { // When the game hasn't started yet. (Before the player press any key.)
