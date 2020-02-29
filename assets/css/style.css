@@ -99,10 +99,6 @@ section {
     z-index: 10;
 }
 
-.current-word__display {
-    letter-spacing: .5rem;
-}
-
 /*.message::before {*/
 /*    content: '';*/
 /*    display: inline-block;*/
@@ -153,6 +149,18 @@ section {
     height: 4rem;
     margin-top: 1rem;
     font-size: 2.2rem;
+}
+
+.letter-box {
+    margin-right: 1rem;
+    padding: .5rem 1rem;
+    display: inline-block;
+    background-color: var(--color-white);
+    border-radius: .5rem;
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.5);
+    text-transform: uppercase;
 }
 
 .hint {

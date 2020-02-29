@@ -100,6 +100,14 @@ function getCurrentWordArray() {
   currentWordArray = wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase().split('');
 }
 
+function showLetterBoxes(array) {
+  let letterBoxes = '';
+  array.forEach(function(letter) {
+    letterBoxes += `<span class="letter-box">${letter}</span>`;
+  })
+  htmlEl.wordDisplay.innerHTML = letterBoxes;
+}
+
 // If there is still any word to guess, it starts a new game with a new word,
 // otherwise, it only shows completed message.
 function startNewWord() {
@@ -116,9 +124,9 @@ function startNewWord() {
     // Update currentWordArray.
     getCurrentWordArray();
     // create dynamic display word array based on length of current word
-    currentWordArray.forEach((item, i) =>	displayedWordArray[i] = hiddenLetter);
-    // join array for display
-    htmlEl.wordDisplay.textContent = displayedWordArray.join('');
+    currentWordArray.forEach((item, i) =>　displayedWordArray[i] = hiddenLetter);
+
+    showLetterBoxes(displayedWordArray);
 
     htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
     writeMessage(messages.play);
@@ -149,10 +157,13 @@ document.onkeydown = function(e) {
 
       // Logic to what to show on Current Word ====================
       // Iterate over currentWordArray, if match update display word array
-      currentWordArray.forEach((letter, i) => { if (letter === userGuessLowercase) displayedWordArray[i] = letter; });
-      // Join updated array for display
-      const displayedWord = displayedWordArray.join('');
-      htmlEl.wordDisplay.textContent = displayedWord;
+      currentWordArray.forEach((letter, i) => {
+        if (letter === userGuessLowercase) {
+          displayedWordArray[i] = letter
+        }
+      });
+
+      showLetterBoxes(displayedWordArray);
 
       // Reduce "Number of Guesses Remaining" until it hits 0 if the displayedWord is not the same as currentWord.
       if (wordGuessGame.guessesRemainNum > 0) {
@@ -175,6 +186,7 @@ document.onkeydown = function(e) {
       }
 
       // *************** WIN!!! The player succeed to guess the word correctly.
+      const displayedWord = displayedWordArray.join('');
       if (displayedWord === wordGuessGame.words[wordGuessGame.gameNum].word.toLowerCase()) {
         wait = true;
         wordGuessGame.addWin();
