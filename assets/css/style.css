@@ -3,6 +3,7 @@
     --color-gold: #e3ca64;
     --color-dark-gold: #b2993d;
     --color-red: #CB1B22;
+    --color-blue: #3877cb;
     --color-white: #fff;
     --color-black: #090909;
     --color-light-gray1: #dedede;
@@ -32,7 +33,7 @@ html {
 body {
     font-family: var(--font-default);
     min-height: 100vh;
-    padding-top: 5rem;
+    padding: 4rem 0;
     line-height: 1.6;
     background-color: var(--color-gold);
     background: var(--color-gold) url("../images/bg1.jpg") repeat-x;
@@ -59,10 +60,14 @@ h1 {
     font-weight: bold;
 }
 
+h2 {
+    font-size: 3rem;
+}
+
 h3 {
     height: 4rem;
     background: var(--color-black);
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: var(--color-white);
     border-radius: .3rem;
     display: flex;
@@ -98,9 +103,76 @@ section {
     letter-spacing: .5rem;
 }
 
+/*.message::before {*/
+/*    content: '';*/
+/*    display: inline-block;*/
+/*    width: 2.5rem;*/
+/*    height: 2.5rem;*/
+/*    margin-right: .6rem;*/
+/*    background-image: url(../images/information-circle.svg);*/
+/*    background-size: contain;*/
+/*    vertical-align: top;*/
+/*}*/
+
+/*.message::before {*/
+/*    content: 'i';*/
+/*    display: inline-block;*/
+/*    !*width: 2.5rem;*!*/
+/*    !*height: 2.5rem;*!*/
+/*    margin-right: .6rem;*/
+/*    padding: .6rem;*/
+/*    border-radius: 50%;*/
+/*    background-color: var(--color-red);*/
+/*    !*background-size: contain;*!*/
+/*    vertical-align: top;*/
+/*}*/
+
+.message-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.message-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: .6rem;
+    fill: var(--color-red);
+}
+
+.message-icon.flashing {
+    animation: flash 2s linear;
+}
+
 .message {
     font-size: 1.5rem;
-    margin-bottom: 2rem;
+    /*vertical-align: bottom;*/
+}
+
+.value {
+    height: 4rem;
+    margin-top: 1rem;
+    font-size: 2.2rem;
+}
+
+.hint {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+}
+
+h4.hint__header {
+    font-weight: bold;
+}
+
+h4.hint__header::after {
+    content: ':';
+    margin-right: 1rem;
+}
+
+.hint__content {
+
 }
 
 .guessed--letter {
@@ -112,6 +184,15 @@ section {
     margin-right: 1rem;
 }
 
+@keyframes flash {
+    0%, 30%, 60%, 100% {
+        opacity: 1;
+    }
+
+    15%, 45%, 75% {
+        opacity: 0;
+    }
+}
 
 /* ========== FOOTER ========== */
 footer {

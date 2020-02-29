@@ -7,7 +7,8 @@ const htmlEl = {
   hint: document.querySelector('.hint__content'),
   guessesRemainNum: document.querySelector('.guesses-remain--num'),
   guessedLetters: document.querySelector('.guessed--letters'),
-  message: document.querySelector('.message')
+  message: document.querySelector('.message'),
+  msgIcon: document.querySelector('.message-icon')
 };
 
 const messages = {
@@ -83,6 +84,8 @@ function setUpPage() {
 
 function writeMessage(message) {
   htmlEl.message.textContent = message;
+  htmlEl.msgIcon.classList.add('flashing');
+  setTimeout('htmlEl.msgIcon.classList.remove("flashing")', 2000);
 }
 
 function writeWinsNum() {
