@@ -76,7 +76,7 @@ let wait = false;
 
 function setUpPage() {
   writeWinsNum();
-  writeGuessRemainNum();
+  writeGuessRemainNum(wordGuessGame.guessesDefaultNum);
   writeMessage(messages.start);
 }
 
@@ -88,8 +88,8 @@ function writeWinsNum() {
   htmlEl.winsNum.textContent = wordGuessGame.wins;
 }
 
-function writeGuessRemainNum() {
-  htmlEl.guessesRemainNum.textContent= wordGuessGame.guessesRemainNum;
+function writeGuessRemainNum(num) {
+  htmlEl.guessesRemainNum.textContent = `${num}`;
 }
 
 function getCurrentWordArray() {
@@ -104,7 +104,7 @@ function startNewWord() {
   htmlEl.guessedLetters.textContent = wordGuessGame.lettersGuessed;
 
   wordGuessGame.resetGuessesRemainNum();
-  writeGuessRemainNum();
+  writeGuessRemainNum(wordGuessGame.guessesDefaultNum);
 
   // Reset displayedWordArray.
   displayedWordArray = [];
@@ -113,7 +113,6 @@ function startNewWord() {
   // create dynamic display word array based on length of current word
   currentWordArray.forEach((item, i) =>	displayedWordArray[i] = hiddenLetter);
   // join array for display
-  console.log(displayedWordArray.join(""));
   htmlEl.wordDisplay.textContent = displayedWordArray.join('');
 
   htmlEl.hint.textContent = wordGuessGame.words[wordGuessGame.gameNum].hint1;
@@ -145,16 +144,15 @@ document.onkeydown = function(e) {
       currentWordArray.forEach((letter, i) => { if (letter === userGuessLowercase) displayedWordArray[i] = letter; });
       // Join updated array for display
       const displayedWord = displayedWordArray.join('');
-      console.log(displayedWord);
       htmlEl.wordDisplay.textContent = displayedWord;
 
       // Reduce "Number of Guesses Remaining" until it hits 0 if the displayedWord is not the same as currentWord.
       if (wordGuessGame.guessesRemainNum > 0) {
         if (wordGuessGame.lettersGuessed.indexOf(userGuess) < 0) {
           wordGuessGame.guessesRemainNum -= 1;
-          htmlEl.guessesRemainNum.textContent = wordGuessGame.guessesRemainNum;
+          writeGuessRemainNum(wordGuessGame.guessesRemainNum);
         } else {
-          htmlEl.guessesRemainNum.textContent = wordGuessGame.guessesRemainNum;
+          writeGuessRemainNum(wordGuessGame.guessesRemainNum);
         }
       }
 
@@ -184,7 +182,7 @@ document.onkeydown = function(e) {
       // *************** LOSE!!! The player failed to guess the word. ("Number of Guesses Remaining" hits 0)
       if (wordGuessGame.guessesRemainNum <= 0) {
         wait = true;
-        htmlEl.guessesRemainNum.textContent = '0';
+        writeGuessRemainNum(0);
         writeMessage(messages.fail);
         if (wordGuessGame.gameNum < wordGuessGame.words.length) {
           wordGuessGame.addGameNum();
