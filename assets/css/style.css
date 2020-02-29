@@ -1,8 +1,10 @@
 /* ========== VARIABLES ========== */
 :root {
-    --color-teal: #4aaaa5;
-    --color-orange: #e1821d;
+    --color-gold: #e3ca64;
+    --color-dark-gold: #b2993d;
+    --color-red: #CB1B22;
     --color-white: #fff;
+    --color-black: #090909;
     --color-light-gray1: #dedede;
     --color-light-gray2: #ddd;
     --color-light-gray3: #ccc;
@@ -30,12 +32,13 @@ html {
 body {
     font-family: var(--font-default);
     line-height: 1.6;
-    background-color: #e1c864;
-    color: var(--color-dark-gray1);
+    background-color: var(--color-gold);
+    color: var(--color-black);
     position: relative;
     font-size: 1.6rem;
 }
 
+/* ========== HEADER ========== */
 h1,
 h2,
 h3 {
@@ -47,19 +50,54 @@ h2 {
     text-align: center;
 }
 
+h1 {
+    margin-top: 5rem;
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+h3 {
+    height: 4rem;
+    background: var(--color-black);
+    font-size: 2rem;
+    color: var(--color-white);
+    border-radius: .3rem;
+    display: flex;
+    align-items: center;
+}
+
+h3::before {
+    /*content: url("../images/heading-deco.png");*/
+    content: '▲';
+    display: inline-block;
+    margin-right: 1rem;
+    transform: rotate(90deg);
+    color: var(--color-red);
+}
+
+section {
+    margin-bottom: 3rem;
+}
+
 /* ========== MAIN CONTENTS ========== */
 .container {
     width: calc(100% - 6rem);
     max-width: 800px;
     margin: 3rem auto 12rem;
-    padding: 3rem;
-    background-color: var(--color-white);
-    border: 1px solid var(--color-light-gray2);
-    border-radius: .5rem;
+    padding: 5rem;
+    background: url("../images/bg2.jpg") repeat;
+    border: 3px solid var(--color-dark-gold);
+    border-radius: .8rem;
+    z-index: 10;
 }
 
 .current-word__display {
     letter-spacing: .5rem;
+}
+
+.message {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .guessed--letter {
@@ -80,4 +118,13 @@ footer {
     bottom: 0;
     background: url("../images/bg1.jpg") repeat-x;
     color: var(--color-white);
+}
+
+
+
+@media screen and (min-width: 641px) {
+    /* width: 641px to 768px */
+    html {
+        font-size: 62.5%; /* 10px/16px = 62.5% -> 1rem = 10px */
+    }
 }
